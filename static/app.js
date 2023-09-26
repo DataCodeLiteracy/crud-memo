@@ -26,8 +26,15 @@ const displayMemo = (memo) => {
 const getMemo = async () => {
   const res = await fetch('/memos')
   const jsonRes = await res.json()
+
   UlElement.innerHTML = ''
-  jsonRes.forEach(displayMemo)
+
+  console.log(jsonRes)
+  const memoArray = jsonRes.map((item) => ({
+    id: item.id,
+    content: item.content
+  }))
+  memoArray.forEach(displayMemo)
 }
 
 const createMemo = async (value) => {
@@ -46,7 +53,6 @@ const createMemo = async (value) => {
 
 const editMemo = async (e) => {
   const id = e.target.dataset.id
-  console.log(id)
   const editInput = prompt('수정할 값을 입력하세요')
   const res = await fetch(`/memos/${id}`, {
     method: 'PUT',
